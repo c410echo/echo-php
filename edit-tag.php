@@ -14,8 +14,8 @@ $the_title= 'Edit a Tag';
 
 include_once('header.php');
 global $tag;
-$tag_id_pk = (int)$_REQUEST['tag_id'];
-$tag = get_tag($tag_id_pk);
+$tag_id = (int)$_REQUEST['tag_id'];
+$tag = get_tag($tag_id);
 $tag_name = get_tag_name($tag);
 $tag_color = get_tag_color($tag);
 $tag_bg = get_tag_bg($tag);
@@ -42,7 +42,7 @@ if(!empty($tag_name) && !isset($tag_color) && !isset($tag_bg)) {
                <?php if (is_admin()) { ?>
 
               <form class="col-xs-6" action="edit-tag.php" method="post" name="edit_tag" id="edit_tag">
-                    <input type="hidden" name="tag_id_pk" value="">
+                    <input type="hidden" name="tag_id" value="">
                     <div class="form-group">
                       <label for="tag_name">Tag Name</label>
                       <input class="form-control" type="text" name="tag_name" id="tag_name" maxlength="32" value="<?php echo $tag_name; ?>">

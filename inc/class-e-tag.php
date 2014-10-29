@@ -16,9 +16,9 @@
 class E_Tag {
 
   /**
-   * @var int $tag_id_PK The ID of the tag
+   * @var int $tag_id The ID of the tag
    */
-  public $tag_id_PK;
+  public $tag_id;
 
   /**
    * @var string $tag_name The name of the tag
@@ -115,7 +115,7 @@ class E_Tag {
     if ( ! $tag_id )
       return false;
 
-    $_tag = self::query("SELECT TOP 1 * FROM tags WHERE tag_id_PK = $tag_id");
+    $_tag = self::query("SELECT * FROM tags WHERE tag_id = $tag_id LIMIT 1");
 
     return new E_Tag ( $_tag );
   }
@@ -188,7 +188,7 @@ class E_Tag {
     $tag_bg      = !empty($tag_bg)    ? _hexadec($tag_bg)      : $_tag->tag_bg;
     $tag_visible = !empty($tag_bg)    ? (int) $tag_visible     : $_tag->tag_visible;
 
-    $edb->update('tags', 'tag_name,tag_color,tag_bg,tag_visible', "'$tag_name', '#$tag_color', '#$tag_bg', $tag_visible", "tag_id_PK = $tag_id" );
+    $edb->update('tags', 'tag_name,tag_color,tag_bg,tag_visible', "'$tag_name', '#$tag_color', '#$tag_bg', $tag_visible", "tag_id = $tag_id" );
   }
 }
 

@@ -28,13 +28,14 @@ class edb {
    *
    * @var object $conn PHP Data Object
    */
-  function connect( $dbuser = 'cmh', $dbpassword = 'cbt', $dbhost = 'buscissql\cisweb' ) {
+  function connect( $dbname = 'echo', $dbuser = 'echo-user', $dbpassword = 'echo-pass' ) {
 
+    $dbname     = empty($dbname)     ? $this->dbname     : $dbname;
     $dbuser     = empty($dbuser)     ? $this->dbuser     : $dbuser;
     $dbpassword = empty($dbpassword) ? $this->dbpassword : $dbpassword;
     $dbhost     = empty($dbhost)     ? $this->dbhost     : $dbhost;
 
-    $conn = new PDO('sqlsrv:Server='.$dbhost, $dbuser, $dbpassword, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+    $conn = new PDO('mysql:unix_socket=/var/mysql/mysql.sock;dbname=' . $dbname, $dbuser, $dbpassword,  array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
     return $conn;
   }

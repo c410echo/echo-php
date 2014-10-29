@@ -25,7 +25,7 @@ include_once('header.php');?>
             </header><!-- .entry-header -->
               <div class="entry-content">
               <form class="col-xs-6" action="ticket.php" method="post" name="create_edit_ticket" id="create_edit_ticket">
-                <input type="hidden" name="tkt_id_pk" value="">
+                <input type="hidden" name="tkt_id" value="">
                 <div class="form-group">
                   <label for="tkt_name">Ticket Name</label>
                   <input class="form-control" type="text" name="tkt_name" id="tkt_name" maxlength="45">

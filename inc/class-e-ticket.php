@@ -98,6 +98,10 @@ class E_Ticket {
 
       $conn = null;
 
+            echo '<pre>';
+      print_r($results);
+      echo '</pre>';
+
       return $results;
     }
     catch (PDOException $e) {
@@ -127,7 +131,7 @@ class E_Ticket {
     if ( ! $tkt_id )
       return false;
 
-    $_ticket = self::query("SELECT TOP 1 * FROM tickets WHERE tkt_id_PK = $tkt_id");
+    $_ticket = self::query("SELECT * FROM tickets WHERE tkt_id = $tkt_id LIMIT 1");
 
     return new E_Ticket ( $_ticket );
   }
@@ -331,7 +335,7 @@ function get_ticket_status( $ticket ) {
 /** @since 0.1.0 */
 function get_ticket_tags($ticket) {
   global $edb;
-  $results = $edb->select( 'ticket_tags JOIN tags ON tag_id_FK = tag_id_PK', '*', "tag_visible = 1 AND tkt_id_FK = $ticket->tkt_id_PK" );
+  $results = $edb->select( 'ticket_tags JOIN tags ON ticket_tags.tag_id = tags.tag_id', '*', "tag_visible = 1 AND tkt_id = $ticket->tkt_id" );
   return $results;
 }
 
