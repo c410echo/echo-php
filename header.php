@@ -9,11 +9,14 @@
  * @author Matt Beall
  * @since 0.1.0
  */
-include_once('functions.php');
+session_start();
+session_regenerate_id();
+
 include_once('inc/class-edb.php');
 include_once('inc/class-e-tag.php');
 include_once('inc/class-e-ticket.php');
 include_once('inc/class-e-user.php');
+include_once('functions.php');
 
 $edb = new edb;
 
@@ -79,7 +82,12 @@ if (!empty($the_type)) {
             <li><a href="contact.php">Contact Us</a></li>
             <li><a href="list.php">Browse</a></li>
             <li><a href="create-ticket.php">Submit Ticket</a></li>
-            <li><a href="login.php">Login</a></li>
+			<?php if (is_logged_in()) { ?>
+			<li><a href="login.php?logout=1">Logout</a></li>
+			<?php }
+			else { ?>
+            <li><a href="login.php">Login</a></li><?php
+			} ?>
           </ul>
         </div><!-- .navbar-collapse -->
       </div><!-- .container -->

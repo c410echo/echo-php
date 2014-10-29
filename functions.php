@@ -179,20 +179,3 @@ function get_tags() {
   $results = $edb->select( 'tags', '*', "tag_visible = 1" );
   return $results;
 }
-
-/** @since 0.1.1 */
-function login_user( $username, $password ) {
-  $u_login_name = _text( $username );
-  $u_pass = _text( $password );
-
-  $u_id = E_User::authenticate_user($u_login_name, $u_pass);
-  $u_id = (int) $u_id;
-  if ($u_id > 0) {
-    session_start();
-    $_SESSION['u_id'] = $u_id;
-    return $u_id;
-  }
-  else {
-    return false;
-  }
-}

@@ -14,14 +14,17 @@ global $the_title;
 $the_title='Login';
 include_once ('header.php');
 
-if (!empty($_REQUEST['username']) && !empty($_REQUEST['password'])){
-  login_user($_REQUEST['username'], $_REQUEST['password']);
+$u_login_name = !empty($_POST['u_login_name']) ? $_POST['u_login_name'] : null;
+$u_pass = !empty($_POST['u_pass']) ? $_POST['u_pass'] : null;
 
-//$userLogin = (isset($_POST['u_login_name'])) ? trim($_POST['u_login_name']) : '';
-//$userPassword = (isset($_POST['u_pass'])) ? trim($_POST['u_pass']) : '';
-
-//$redirect = (isset($_REQUEST['redirect'])) ? $_REQUEST['redirect'] : 'index.php';
+if (!empty($u_login_name) && !empty($u_pass)) {
+  login_user( $u_login_name, $u_pass );
 }
+
+if (isset($_REQUEST['logout'])) {
+  logout_user();
+}
+
 ?>
 <div id="primary" class="content-area container">
       <div id="content" class="site-content col-lg-12 col-md-12" role="main">
@@ -32,66 +35,20 @@ if (!empty($_REQUEST['username']) && !empty($_REQUEST['password'])){
             </header><!-- .entry-header -->
 
             <div class="entry-content">
-<?php
-//$userLogin = (isset($_POST['u_login_name'])) ? trim($_POST['u_login_name']) : '';
-//$userPassword = (isset($_POST['u_pass'])) ? trim($_POST['u_pass']) : '';
-
-//$redirect = (isset($_REQUEST['redirect'])) ? $_REQUEST['redirect'] : 'index.php';
-
-// if the form was submitted
-
-/*if (isset($_POST['login']))
-{
-    //Call getUser method to check credentials
-
-    $userList = get_user($userLogin, $userPassword);
-
-    if (count($userList)==1) //If credentials check out
-    {
-        extract($userList[0]);
-
-        // assign user info to an array
-
-        $userInfo = array('contactpk'=>$contactpk, 'firstname'=>$firstname, 'userrole'=>$userrolename);
-
-        // assign the array to a session array element
-
-        $_SESSION['userInfo'] = $userInfo;
-        session_write_close(); //typically not required; ensures that the session data is stored
-
-        // redirect the user
-
-        header('location:' . $redirect);
-        die();
-    }
-
-    else // Otherwise, assign error message to $error
-    {
-        $error = 'Invalid login credentials<br />Please try again';
-    }
-}
-*/
-?>
-<form class="col-xs-6" action="login.php" name="loginForm" id="loginForm" method="post">
-
-   <input type="hidden" name ="redirect" value ="<?php echo $redirect ?>" />
-   <div class="form-group">
-  <label for="userlogin">Username:</label>
-   <input type="text" name="userlogin" id ="userlogin" value="<?php echo $userLogin; ?>" maxlength="10" autofocus="autofocus" required="required" pattern="^[\w@\.\-]+" title="User Name has invalid characters" /></div>
-   <div class="form-group">
-  <label for="userpassword">Password:</label>
-   <input type="password" name="userpassword" id="userpassword" value="<?php echo $userPassword; ?>" maxlength="10" required="required" pattern="^[\w@\.\-]+" title="Password has invalid characters" /></div>
-      <p>
-         <input type="submit" value="Login" name="login" /> <br />
-         New user?  <a href="register.php">Register Here</a>
-      </p>
-</form>
-
-<?php
-//$login=get_user()
-?>
-
-</div><!-- .entry-content -->
+              <form role="form" action="login.php" method="post">
+                <div class="form-group">
+                  <label for="u_login_name">Username</label>
+                  <input type="text" class="form-control" id="u_login_name" name="u_login_name" placeholder="Username">
+                </div>
+                <div class="form-group">
+                  <label for="u_pass">Password</label>
+                  <input type="password" class="form-control" id="eu_pass" name="u_pass" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+                <a class="btn btn-default" href="register.php">Register</a>
+              </form>
+            </div><!-- .entry-content -->
+          </article>
         </div><!-- .row -->
       </div><!-- #content -->
     </div><!-- #primary -->

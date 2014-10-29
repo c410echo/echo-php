@@ -17,7 +17,6 @@ $the_title='Profile';
 include_once ('header.php');
 global $user;
 $u_id=(int)$_REQUEST['profile'];
-echo $u_id;
 $user=get_user($u_id);
 $u_first=get_user_first($user);
 $u_last=get_user_last($user);

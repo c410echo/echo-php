@@ -66,7 +66,7 @@ if(!empty($tkt_name) && !empty($tkt_desc) && !empty($tkt_priority) && !empty($tk
                         <option value="open">Open</option>
                         <option value="review">Review</option>
                         <option value="<?php echo $tkt_status ?>" selected="selected"></option>
-                      </Select>
+                      </select>
                     </div>
                     <div class="form-group">
                       <label for="tkt_desc">Description:</label>

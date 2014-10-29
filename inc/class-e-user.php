@@ -248,7 +248,7 @@ class E_User {
    * @return true|false          If true, the email address exists; else, false.
    * @var    object     $users   The user(s), if any, that use the email address in $u_email
    */
-  private function email_exists( $u_email ) {
+  private static function email_exists( $u_email ) {
     global $edb;
     $users = $edb->select('registered_users', 'reg_u_id_PK_FK,u_email', "u_email = '$u_email'");
     if (!empty($users))
@@ -268,7 +268,7 @@ class E_User {
    * @return true|false               If true, the login name is already taken; else, false.
    * @var    object     $users        The user(s), if any, that use the login name in $u_login_name
    */
-  private function login_name_exists( $u_login_name ) {
+  private static function login_name_exists( $u_login_name ) {
     global $edb;
     $users = $edb->select('registered_users', 'reg_u_id_PK_FK,u_login_name', "u_login_name = '$u_login_name'");
     if (!empty($users))
@@ -288,7 +288,7 @@ class E_User {
    * @return int               The ID of the user
    * @var    object     $users The user(s), if any, that have the IP address
    */
-  private function get_user_id( $u_ip ) {
+  private static function get_user_id( $u_ip ) {
     global $edb;
     $users = self::query("SELECT TOP 1 * FROM users WHERE u_ip = '$u_ip' ORDER BY u_id_PK DESC");
     foreach ( $users as $user ) {
@@ -311,7 +311,7 @@ class E_User {
    * @return int               The ID of the user
    * @var    object     $users The user(s), if any, that have the IP address
    */
-  private function authenticate_user( $u_login_name, $u_pass ) {
+  public static function authenticate_user( $u_login_name, $u_pass ) {
     global $edb;
     $users = self::query("SELECT TOP 1 * FROM users JOIN registered_users ON u_id_PK = reg_u_id_PK_FK WHERE u_login_name = '$u_login_name' AND u_pass = '$u_pass' ORDER BY u_id_PK DESC");
     foreach ( $users as $user ) {
@@ -519,4 +519,31 @@ function is_user_visible( $user ) {
     return true;
   else
     return false;
+}
+
+/** @since 0.1.1 */
+function login_user( $username, $password ) {
+  $u_login_name = _text( $username );
+  $u_pass = _text( $password );
+
+  $u_id = E_User::authenticate_user($u_login_name, $u_pass);
+  $u_id = (int) $u_id;
+  if ($u_id > 0) {
+    $_SESSION['u_id'] = $u_id;
+	$_SESSION['u_login_name'] = $u_login_name;
+    
+    header("Location: profile.php?profile=$u_id");
+    exit;
+  }
+  else {
+    header("Location: login.php?invalid=1");
+    exit;
+  }
+}
+
+function logout_user() {
+session_start();
+unset($_SESSION['u_id']);
+unset($_SESSION['u_login_name']);
+session_destroy();
 }
