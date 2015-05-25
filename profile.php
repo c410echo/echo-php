@@ -2,9 +2,9 @@
 /**
  * Profile page
  *
- * If logged in, this page allows user to edit own information.
- * If not logged in, or different user from current profile,
- * this page displays public information for a particular user.
+ * If logged in, this page allows moderator to edit own information.
+ * If not logged in, or different moderator from current profile,
+ * this page displays public information for a particular moderator.
  *
  * @author Hannah Turner
  * @since 0.1.0
@@ -15,13 +15,13 @@
 global $the_title;
 $the_title='Profile';
 include_once ('header.php');
-global $user;
-$u_id=(int)$_REQUEST['profile'];
-$user=get_user($u_id);
-$u_first=get_user_first($user);
-$u_last=get_user_last($user);
-$u_email=get_user_email($user);
-$u_login_name=get_user_login_name($user);?>
+global $moderator;
+$mod_id=(int)$_REQUEST['profile'];
+$moderator=get_moderator($mod_id);
+$mod_first=get_moderator_first($moderator);
+$mod_last=get_moderator_last($moderator);
+$mod_email=get_moderator_email($moderator);
+$mod_login_name=get_moderator_login_name($moderator);?>
 
 <div id="primary" class="content-area container">
       <div id="content" class="site-content col-lg-12 col-md-12" role="main">
@@ -35,16 +35,16 @@ $u_login_name=get_user_login_name($user);?>
 
 <section>
   <h1>My Profile</h1>
-    <?php echo "$u_first $u_last"; ?><br />
-    <?php echo "$u_login_name"; ?>
+    <?php echo "$mod_first . $mod_last"; ?><br />
+    <?php echo "$mod_login_name"; ?>
   <h1>My Contact Info</h1>
-        <h5>Email:<?php echo "$u_email"; ?></h5>
+        <h5>Email:<?php echo "$mod_email"; ?></h5>
 </section>
 
 
 <FORM method="post" action="edit-profile.php">
 <p>
-  <input type="hidden" name="profile" value="<?php echo $user->u_id; ?>">
+  <input type="hidden" name="profile" value="<?php echo $moderator->mod_id_PK; ?>">
   <input type="submit"  value="Edit Profile" name="edit-profile" />
 </p>
 </FORM>

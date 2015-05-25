@@ -19,6 +19,7 @@ $_priority = !empty($_POST['_priority']) ? _text($_POST['_priority']) : null;
 $_status = !empty($_POST['_status']) ? _text($_POST['_status']) : 'open';
 
 $filter = null;
+$filter .= !empty($_status)    ? " tkt_status = '" . $_status . "'" : " tkt _status = 'open'";
 $filter .= !empty($_search) ? " AND (tkt_name LIKE '%" . $_search . "%' OR tkt_desc LIKE '%" . $_search . "%')" : null;
 $filter .= !empty($_tag_id)    ? " AND tag_id = " . (int) $_tag_id : null;
 $filter .= !empty($_priority)    ? " AND tkt_priority = '" . $_priority . "'" : null;

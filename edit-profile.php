@@ -2,7 +2,7 @@
 /**
  * Edit profile page
  *
- * Allows a registered user to edit profile
+ * Allows a registered moderator to edit profile
  *
  * @author Hannah Turner
  * @since 0.1.1
@@ -13,13 +13,14 @@
 global $the_title;
 $the_title='Edit Profile';
 include_once ('header.php');
-global $user;
-$u_id=(int)$_REQUEST['profile'];
-$user=get_user($u_id);
-$u_first=get_user_first($user);
-$u_last=get_user_last($user);
-$u_email=get_user_email($user);
-$u_login_name=get_user_login_name($user);?>
+global $moderator;
+$mod_id=(int)$_REQUEST['profile'];
+$moderator=get_moderator($mod_id);
+$mod_first=get_moderator_first($moderator);
+$mod_last=get_moderator_last($moderator);
+$mod_email=get_moderator_email($moderator);
+$mod_login_name=get_moderator_login_name($moderator);
+?>
 
 <div id="primary" class="content-area container">
       <div id="content" class="site-content col-lg-12 col-md-12" role="main">
@@ -31,36 +32,22 @@ $u_login_name=get_user_login_name($user);?>
 
             <div class="entry-content">
 
-<form class="col-xs-6" name ="addEditForm" id="addEditForm" action="edit-profile.php" method="post" onsubmit="return checkForm(this)">
+<form class="form col-xs-6" name ="addEditForm" id="addEditForm" action="edit-profile.php" method="post" onsubmit="return checkForm(this)">
+
+   <h4><?php echo $mod_login_name; ?></h4>
 
 <?php
-    if ($editmode)
-    {
-        echo '<input type="hidden" name="u_id" value="' . $u_id . '" />';
-    }
-?>
-
- <div class="form-group">
-<label for="userlogin">Username:</label>
-   <span><?php echo $u_login_name; ?></span>
-   <div class="form-group">
-  <label for="userpassword">Password:</label>
-   <input type="password" name="u_pass" id="userpassword" value="<?php echo $u_pass; ?>" class="ten" maxlength="10" required="required" pattern="^[\w@\.-]+$" title="Valid characters are a-z 0-9 _ . @ -" /></div>
     <div class="form-group">
-  <label for="firstname">First Name:</label>
-   <input type="text" name="u_first" id ="firstname" value="<?php echo $u_first; ?>" maxlength="20" class="twenty" required="required" pattern="^[a-zA-Z-]+$" title="First Name has invalid characters" /></div>
+  <label for="firstname">First Name</label>
+   <input type="text" name="mod_first" id ="firstname" value="<?php echo $mod_first; ?>" maxlength="20" class="form-control" required="required" pattern="^[a-zA-Z-]+$" title="First Name has invalid characters" /></div>
     <div class="form-group">
-  <label for="lastname">Last Name:</label>
-   <input type="text" name="u_last" id ="lastname" value="<?php echo $u_last; ?>" maxlength="20" class="twenty" required="required" pattern="^[a-zA-Z-]+$" title="Last Name has invalid characters" /></div>
+  <label for="lastname">Last Name</label>
+   <input type="text" name="mod_last" id ="lastname" value="<?php echo $mod_last; ?>" maxlength="20" class="form-control" required="required" pattern="^[a-zA-Z-]+$" title="Last Name has invalid characters" /></div>
     <div class="form-group">
-  <label for="email">Email:</label>
-   <input type="text" name="u_email" id ="email" value="<?php echo $u_email; ?>" maxlength="50" class="twenty" required="required" pattern="^[\w-\.]+@[\w]+\.[a-zA-Z]{2,4}$" title="Enter a valid email" /></div>
-    <div class="form-group">
-
-   <p>
-     <input type="submit" value="Submit Changes" />
-     <a href="profile.php">Cancel</a>
-   </p>
+  <label for="email">Email</label>
+   <input type="text" name="mod_email" id ="email" value="<?php echo $mod_email; ?>" maxlength="50" class="form-control" required="required" pattern="^[\w-\.]+@[\w]+\.[a-zA-Z]{2,4}$" title="Enter a valid email" /></div>
+     <button class="btn btn-primary" type="submit">Update profile</button>
+     <a class="btn btn-default" href="profile.php">Cancel</a>
 
 </form>
 

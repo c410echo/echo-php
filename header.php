@@ -15,7 +15,7 @@ session_regenerate_id();
 include_once('inc/class-edb.php');
 include_once('inc/class-e-tag.php');
 include_once('inc/class-e-ticket.php');
-include_once('inc/class-e-user.php');
+include_once('inc/class-e-moderator.php');
 include_once('functions.php');
 
 $edb = new edb;
