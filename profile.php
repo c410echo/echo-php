@@ -35,7 +35,7 @@ $u_login_name=get_user_login_name($user);?>
 
 <section>
   <h1>My Profile</h1>
-    <?php echo "$u_first . $u_last"; ?><br />
+    <?php echo "$u_first $u_last"; ?><br />
     <?php echo "$u_login_name"; ?>
   <h1>My Contact Info</h1>
         <h5>Email:<?php echo "$u_email"; ?></h5>
@@ -44,7 +44,7 @@ $u_login_name=get_user_login_name($user);?>
 
 <FORM method="post" action="edit-profile.php">
 <p>
-  <input type="hidden" name="profile" value="<?php echo $user->u_id_PK; ?>">
+  <input type="hidden" name="profile" value="<?php echo $user->u_id; ?>">
   <input type="submit"  value="Edit Profile" name="edit-profile" />
 </p>
 </FORM>

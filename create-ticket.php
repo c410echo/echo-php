@@ -39,7 +39,7 @@ if(!empty($tkt_name) && !empty($tkt_desc)) {
                <?php if (is_admin()) { ?>
 
                 <form class="col-xs-6" action="create-ticket.php" method="post" name="create_ticket_user" id="create_ticket_user">
-                    <input type="hidden" name="tkt_id_pk" value="">
+                    <input type="hidden" name="tkt_id" value="">
                     <div class="form-group">
                       <label for="tkt_name">Ticket Name</label>
                       <input class="form-control" type="text" name="tkt_name" id="tkt_name" maxlength="45">
@@ -60,7 +60,7 @@ if(!empty($tkt_name) && !empty($tkt_desc)) {
               <?php }else {  ?>
 
                 <form class="col-xs-6" action="create-ticket.php" method="post" name="create_ticket" id="create_ticket">
-                  <input type="hidden" name="tkt_id_pk" value="">
+                  <input type="hidden" name="tkt_id" value="">
                   <div class="form-group">
                     <label for="tkt_name">Ticket Name</label>
                     <input class="form-control" type="text" name="tkt_name" id="tkt_name" maxlength="45">

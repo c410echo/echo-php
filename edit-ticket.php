@@ -17,8 +17,8 @@ $the_title= 'Edit a Ticket';
 
 include_once('header.php');
 global $ticket;
-$tkt_id_pk = (int)$_REQUEST['tkt_id'];
-$ticket = get_ticket($tkt_id_pk);
+$tkt_id = (int)$_REQUEST['tkt_id'];
+$ticket = get_ticket($tkt_id);
 $tkt_name = get_ticket_name($ticket);
 $tkt_priority = get_ticket_priority($ticket);
 $tkt_desc = get_ticket_desc($ticket);
@@ -49,7 +49,7 @@ if(!empty($tkt_name) && !empty($tkt_desc) && !empty($tkt_priority) && !empty($tk
                <?php if (is_admin()) { ?>
 
               <form class="col-xs-6" action="edit-ticket.php" method="post" name="edit_ticket_user" id="edit_ticket_user">
-                    <input type="hidden" name="tkt_id_pk" value="">
+                    <input type="hidden" name="tkt_id" value="">
                     <div class="form-group">
                       <label for="tkt_name">Ticket Name</label>
                       <input class="form-control" type="text" name="tkt_name" id="tkt_name" maxlength="45" value="<?php echo $tkt_name ?>">

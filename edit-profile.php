@@ -15,7 +15,6 @@ $the_title='Edit Profile';
 include_once ('header.php');
 global $user;
 $u_id=(int)$_REQUEST['profile'];
-echo $u_id;
 $user=get_user($u_id);
 $u_first=get_user_first($user);
 $u_last=get_user_last($user);
@@ -37,13 +36,13 @@ $u_login_name=get_user_login_name($user);?>
 <?php
     if ($editmode)
     {
-        echo '<input type="hidden" name="u_id_PK" value="' . $u_id_PK . '" />';
+        echo '<input type="hidden" name="u_id" value="' . $u_id . '" />';
     }
 ?>
 
  <div class="form-group">
 <label for="userlogin">Username:</label>
-   <input type="text" name="u_login_name" id ="userlogin" value="<?php echo $u_login_name; ?>" class="ten" maxlength="10" autofocus="autofocus" required="required" pattern="^[\w@\.-]+$" title="Valid characters are a-z 0-9 _ . @ -" /></div>
+   <span><?php echo $u_login_name; ?></span>
    <div class="form-group">
   <label for="userpassword">Password:</label>
    <input type="password" name="u_pass" id="userpassword" value="<?php echo $u_pass; ?>" class="ten" maxlength="10" required="required" pattern="^[\w@\.-]+$" title="Valid characters are a-z 0-9 _ . @ -" /></div>

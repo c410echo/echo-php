@@ -17,15 +17,15 @@
  *
  * @param object $_user The user to check against
  * @return bool
- * @var int $u_id_PK The ID of the user object
+ * @var int $u_id The ID of the user object
  * @var int $u_id    The ID of the user logged in
  */
 function is_user_logged_in( $_user ) {
   if (is_logged_in()) {
-    $u_id_PK = !empty($_user) ? get_user_data( $_user , 'u_id_PK' ) : 0;
+    $u_id = !empty($_user) ? get_user_data( $_user , 'u_id' ) : 0;
     $u_id    = (int) $_SESSION['u_id'];
 
-    if ($u_id_PK == $u_id)
+    if ($u_id == $u_id)
       return true;
     else
       return false;
@@ -166,10 +166,15 @@ function _email( $email, $length = 0 ) {
 }
 
 /** @since 0.0.8 */
-function get_tickets( $match = NULL, $args = array() ) {
+function get_tickets( $match = NULL, $join = false, $args = array() ) {
   global $edb;
-  $match = !empty($match) ? "tkt_visible = 1" . $match: "tkt_status = 'open' AND tkt_visible = 1";
-  $results = $edb->select( 'tickets LEFT JOIN ticket_tags ON tkt_id_PK = tkt_id_FK', '*', $match, $args );
+  $match = !empty($match) ? "tkt_visible = 1" . $match : "tkt_status = 'open' AND tkt_visible = 1";
+  if ($join) {
+    $results = $edb->select( 'tickets LEFT JOIN ticket_tags ON tickets.tkt_id = ticket_tags.tkt_id', '*', $match, $args );
+  }
+  else {
+    $results = $edb->select( 'tickets', '*', $match, $args );
+  }
   return $results;
 }
 

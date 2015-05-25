@@ -16,9 +16,9 @@
 class E_User {
 
   /**
-   * @var int $u_id_PK The ID of the user
+   * @var int $u_id The ID of the user
    */
-  public $u_id_PK;
+  public $u_id;
 
   /**
    * @var string $u_ip The IP address of the user
@@ -135,7 +135,7 @@ class E_User {
     if ( ! $u_id )
       return false;
 
-    $_user = self::query("SELECT TOP 1 * FROM users LEFT JOIN registered_users ON u_id_PK = reg_u_id_PK_FK WHERE u_id_PK = $u_id");
+    $_user = self::query("SELECT * FROM users LEFT JOIN registered_users ON users.u_id = registered_users.u_id WHERE users.u_id = $u_id LIMIT 1");
 
     return new E_User ( $_user );
   }
@@ -186,7 +186,7 @@ class E_User {
         echo '<div class="alert alert-danger">An account with this email address already exists.</div>';
       }
       else {
-        $edb->insert( 'registered_users', 'reg_u_id_PK_FK,u_first,u_last,u_email,u_login_name,u_pass', "$u_id,'$u_first','$u_last','$u_email','$u_login_name','$u_pass'" );
+        $edb->insert( 'registered_users', 'u_id,u_first,u_last,u_email,u_login_name,u_pass', "$u_id,'$u_first','$u_last','$u_email','$u_login_name','$u_pass'" );
         header("Location: login.php?new=1");
         exit;
       }
@@ -233,8 +233,8 @@ class E_User {
     $u_admin      = !empty($u_admin)   ? (int) $u_admin   : (int) $_user->u_admin;
     $u_visible    = !empty($u_visible) ? (int) $u_visible : (int) $_user->u_visible;
 
-    $edb->update('users', 'u_admin,u_visible', "$u_admin, $u_visible", "u_id_PK = $u_id" );
-    $edb->update('registered_users', 'u_email, u_login_name, u_pass, u_first, u_last', "$u_email, $u_login_name, $u_pass, $u_first, $u_last", "reg_u_id_PK_FK = $u_id" );
+    $edb->update('users', 'u_admin,u_visible', "$u_admin, $u_visible", "users.u_id = $u_id" );
+    $edb->update('registered_users', 'u_email, u_login_name, u_pass, u_first, u_last', "$u_email, $u_login_name, $u_pass, $u_first, $u_last", "users.u_id = $u_id" );
   }
 
   /**
@@ -250,7 +250,7 @@ class E_User {
    */
   private static function email_exists( $u_email ) {
     global $edb;
-    $users = $edb->select('registered_users', 'reg_u_id_PK_FK,u_email', "u_email = '$u_email'");
+    $users = $edb->select('registered_users', 'u_id,u_email', "u_email = '$u_email'");
     if (!empty($users))
       return true;
     else
@@ -270,7 +270,7 @@ class E_User {
    */
   private static function login_name_exists( $u_login_name ) {
     global $edb;
-    $users = $edb->select('registered_users', 'reg_u_id_PK_FK,u_login_name', "u_login_name = '$u_login_name'");
+    $users = $edb->select('registered_users', 'u_id,u_login_name', "u_login_name = '$u_login_name'");
     if (!empty($users))
       return true;
     else
@@ -290,13 +290,13 @@ class E_User {
    */
   private static function get_user_id( $u_ip ) {
     global $edb;
-    $users = self::query("SELECT TOP 1 * FROM users WHERE u_ip = '$u_ip' ORDER BY u_id_PK DESC");
+    $users = self::query("SELECT * FROM users WHERE u_ip = '$u_ip' ORDER BY users.u_id DESC LIMIT 1");
     foreach ( $users as $user ) {
         get_class($user);
         foreach ( $user as $key => $value )
           $key = $value;
     }
-    $u_id = (int) $user->u_id_PK;
+    $u_id = (int) $user->u_id;
     return $u_id;
   }
 
@@ -313,13 +313,13 @@ class E_User {
    */
   public static function authenticate_user( $u_login_name, $u_pass ) {
     global $edb;
-    $users = self::query("SELECT TOP 1 * FROM users JOIN registered_users ON u_id_PK = reg_u_id_PK_FK WHERE u_login_name = '$u_login_name' AND u_pass = '$u_pass' ORDER BY u_id_PK DESC");
+    $users = self::query("SELECT * FROM users JOIN registered_users ON users.u_id = registered_users.u_id WHERE u_login_name = '$u_login_name' AND u_pass = '$u_pass' ORDER BY users.u_id DESC LIMIT 1");
     foreach ( $users as $user ) {
         get_class($user);
         foreach ( $user as $key => $value )
           $key = $value;
     }
-    $u_id = (int) $user->u_id_PK;
+    $u_id = (int) $user->u_id;
     if ($u_id > 0)
       return $u_id;
     else
@@ -361,8 +361,8 @@ function create_user( $u_email, $u_login_name, $u_pass, $u_first = null, $u_last
  * @param int    $u_admin      If 1, user is admin; else, user is not admin.
  * @param int    $u_visible    If 0, user has been "deleted"; else, user is visible.
  */
-function update_user( $u_id, $u_email = null, $u_login_name = null, $u_pass = null, $u_first = null, $u_last = null, $u_admin = null, $u_visible = null ) {
-  $user = E_User::set_instance( $u_id, $u_email, $u_login_name, $u_pass, $u_first, $u_last, $u_admin, $u_visible );
+function update_user( $u_id, $u_email = null, $u_pass = null, $u_first = null, $u_last = null, $u_admin = null, $u_visible = null ) {
+  $user = E_User::set_instance( $u_id, $u_email, $u_pass, $u_first, $u_last, $u_admin, $u_visible );
   return $user;
 }
 
@@ -530,8 +530,8 @@ function login_user( $username, $password ) {
   $u_id = (int) $u_id;
   if ($u_id > 0) {
     $_SESSION['u_id'] = $u_id;
-	$_SESSION['u_login_name'] = $u_login_name;
-    
+  $_SESSION['u_login_name'] = $u_login_name;
+
     header("Location: profile.php?profile=$u_id");
     exit;
   }

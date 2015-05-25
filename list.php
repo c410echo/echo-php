@@ -20,7 +20,7 @@ $_status = !empty($_POST['_status']) ? _text($_POST['_status']) : 'open';
 
 $filter = null;
 $filter .= !empty($_search) ? " AND (tkt_name LIKE '%" . $_search . "%' OR tkt_desc LIKE '%" . $_search . "%')" : null;
-$filter .= !empty($_tag_id)    ? " AND tag_id_FK = " . (int) $_tag_id : null;
+$filter .= !empty($_tag_id)    ? " AND tag_id = " . (int) $_tag_id : null;
 $filter .= !empty($_priority)    ? " AND tkt_priority = '" . $_priority . "'" : null;
 $filter .= !empty($_status)    ? " AND tkt_status = '" . $_status . "'" : " AND _status = 'open'";
 ?>
@@ -49,9 +49,9 @@ $filter .= !empty($_status)    ? " AND tkt_status = '" . $_status . "'" : " AND 
 
                   foreach($tags as $tag) {
                     $output .= '<option value="';
-                    $output .= $tag->tag_id_PK;
+                    $output .= $tag->tag_id;
                     $output .= '"';
-                    $output .= $_tag_id == $tag->tag_id_PK ? 'selected' : '';
+                    $output .= $_tag_id == $tag->tag_id ? 'selected' : '';
                     $output .= '>';
                     $output .= $tag->tag_name;
                     $output .= '</option>';
@@ -114,11 +114,11 @@ $filter .= !empty($_status)    ? " AND tkt_status = '" . $_status . "'" : " AND 
         foreach ($tickets as $ticket) {
         ?>
 
-          <h3><a href="edit-ticket.php?tkt_id=<?php echo $ticket->tkt_id_PK; ?>"><?php echo $ticket->tkt_name; ?></a></h3>
+          <h3><a href="edit-ticket.php?tkt_id=<?php echo $ticket->tkt_id; ?>"><?php echo $ticket->tkt_name; ?></a></h3>
           <p><?php echo $ticket->tkt_desc; ?></p>
-		  <p>Tags: <?php $tags = get_ticket_tags( $ticket ); foreach ($tags as $tag) { echo "<span class=\"label label-info\" style=\"color:$tag->tag_color;background:$tag->tag_bg;\">$tag->tag_name</span>"; } ?></p>
-		  <p>Priority: <?php echo $ticket->tkt_priority; ?></p>
-		  
+      <p>Tags: <?php $tags = get_ticket_tags( $ticket ); foreach ($tags as $tag) { echo "<span class=\"label label-info\" style=\"color:$tag->tag_color;background:$tag->tag_bg;\">$tag->tag_name</span>"; } ?></p>
+      <p>Priority: <?php echo $ticket->tkt_priority; ?></p>
+
         <?php } ?>
         </div><!-- .entry-content -->
         </article>

@@ -36,7 +36,7 @@ if(!empty($tag_name) && !isset($tag_color) && !isset($tag_bg)) {
                <?php if (is_admin()) { ?>
 
               <form class="col-xs-6" action="create-tag.php" method="post" name="create_tag" id="create_tag">
-                    <input type="hidden" name="tag_id_pk" value="">
+                    <input type="hidden" name="tag_id" value="">
                     <div class="form-group">
                       <label for="tag_name">Tag Name</label>
                       <input class="form-control" type="text" name="tag_name" id="tag_name" maxlength="32">
