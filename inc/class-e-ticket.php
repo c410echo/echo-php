@@ -48,11 +48,6 @@ class E_Ticket {
   public $tkt_status = '';
 
   /**
-   * @var int $tkt_visible If 0, then ticket is "deleted", otherwise ticket is visible.
-   */
-  public $tkt_visible = 1;
-
-  /**
    * Construct E_Ticket object
    *
    * Takes PDO and constructs E_Ticket class
@@ -115,7 +110,7 @@ class E_Ticket {
    *
    * Prepare and execute query to select ticket from database
    *
-   * @since 0.0.3
+   * @since 0.2.0
    *
    * @uses self::query()
    *
@@ -131,7 +126,7 @@ class E_Ticket {
     if ( ! $tkt_id )
       return false;
 
-    $_ticket = self::query("SELECT * FROM tickets WHERE tkt_id = $tkt_id LIMIT 1");
+    $_ticket = self::query("SELECT * FROM tickets WHERE tkt_id_PK = $tkt_id LIMIT 1");
 
     return new E_Ticket ( $_ticket );
   }
@@ -141,7 +136,7 @@ class E_Ticket {
    *
    * Prepare and execute query to register ticket in tickets table
    *
-   * @since 0.0.4
+   * @since 0.2.0
    *
    * @uses edb::insert()
    * @uses _text()
@@ -161,9 +156,8 @@ class E_Ticket {
     $tkt_desc     = _text( $tkt_desc         );
     $tkt_priority = _text( $tkt_priority, 8  );
     $tkt_status   = _text( $tkt_status  , 8  );
-    $tkt_visible = 1;
 
-    $edb->insert('tickets', 'tkt_name,tkt_desc,tkt_priority,tkt_status,tkt_visible', "'$tkt_name', '$tkt_desc', '$tkt_priority', '$tkt_status', $tkt_visible" );
+    $edb->insert('tickets', 'tkt_name,tkt_desc,tkt_priority,tkt_status', "'$tkt_name', '$tkt_desc', '$tkt_priority', '$tkt_status'" );
   }
 
   /**
@@ -171,7 +165,7 @@ class E_Ticket {
    *
    * Prepare and execute query to register ticket in tickets table
    *
-   * @since 0.0.4
+   * @since 0.2.0
    *
    * @uses edb::update()
    * @uses _text()
@@ -181,21 +175,19 @@ class E_Ticket {
    * @param string $tkt_desc     The description of the ticket
    * @param string $tkt_priority The priority of the ticket
    * @param string $tkt_status   The status of the ticket
-   * @param int    $tkt_visible  If 0, then ticket is "deleted", otherwise ticket is visible.
    *
    * @todo Add ability to specify tags
    * @todo Test
    */
-  public static function set_instance( $tkt_id, $tkt_name = null, $tkt_desc = null, $tkt_priority = null, $tkt_status = null, $tkt_visible = null ) {
+  public static function set_instance( $tkt_id, $tkt_name = null, $tkt_desc = null, $tkt_priority = null, $tkt_status = null ) {
     global $edb;
 
     $tkt_name     = !empty($tkt_name)     ? _text( $tkt_name    , 45 ) : $_ticket->tkt_name;
     $tkt_desc     = !empty($tkt_desc)     ? _text( $tkt_desc         ) : $_ticket->tkt_desc;
     $tkt_priority = !empty($tkt_priority) ? _text( $tkt_priority, 8  ) : $_ticket->tkt_priority;
     $tkt_status   = !empty($tkt_status)   ? _text( $tkt_status  , 8  ) : $_ticket->tkt_status;
-    $tkt_visible  = !empty($tkt_visible)  ? (int) $tkt_visible         : (int) $_ticket->tkt_visible;
 
-    $edb->insert('tickets', 'tkt_name,tkt_desc,tkt_priority,tkt_status', "'$tkt_name', '$tkt_desc', '$tkt_priority', '$tkt_status', $tkt_visible" );
+    $edb->insert('tickets', 'tkt_name,tkt_desc,tkt_priority,tkt_status', "'$tkt_name', '$tkt_desc', '$tkt_priority', '$tkt_status'" );
   }
 }
 
@@ -219,7 +211,7 @@ function create_ticket( $tkt_name, $tkt_desc, $tkt_priority = 'normal', $tkt_sta
 /**
  * Update ticket
  *
- * @since 0.0.4
+ * @since 0.2.0
  *
  * @uses E_Ticket::set_instance() Constructs E_Ticket class and gets class object
  *
@@ -228,10 +220,9 @@ function create_ticket( $tkt_name, $tkt_desc, $tkt_priority = 'normal', $tkt_sta
  * @param string $tkt_desc     The description of the ticket
  * @param string $tkt_priority The priority of the ticket
  * @param string $tkt_status   The status of the ticket
- * @param int    $tkt_visible  If 0, then ticket is "deleted", otherwise ticket is visible.
  */
-function update_ticket( $tkt_id, $tkt_name = null, $tkt_desc = null, $tkt_priority = null, $tkt_status = null, $tkt_visible = null ) {
-  $ticket = E_Ticket::set_instance( $tkt_name, $tkt_desc, $tkt_priority, $tkt_status, $tkt_visible );
+function update_ticket( $tkt_id, $tkt_name = null, $tkt_desc = null, $tkt_priority = null, $tkt_status = null ) {
+  $ticket = E_Ticket::set_instance( $tkt_name, $tkt_desc, $tkt_priority, $tkt_status );
   return $ticket;
 }
 
@@ -332,30 +323,10 @@ function get_ticket_status( $ticket ) {
   return $tkt_status;
 }
 
-/** @since 0.1.0 */
+/** @since 0.2.0 */
 function get_ticket_tags($ticket) {
   global $edb;
-  $results = $edb->select( 'ticket_tags JOIN tags ON ticket_tags.tag_id = tags.tag_id', '*', "tag_visible = 1 AND tkt_id = $ticket->tkt_id" );
+  $results = $edb->select( 'ticket_tags JOIN tags ON tag_id_FK = tag_id_PK', '*', "tkt_id_FK = $ticket->tkt_id_PK" );
   return $results;
 }
 
-/**
- * Check if the ticket is visible or not
- *
- * @since 0.0.4
- *
- * @uses get_ticket_data()
- *
- * @param  object $ticket      The E_Ticket class containing the data for the tag
- * @return bool
- * @var    string $tkt_visible If 0, ticket has been "deleted"; else, ticket is visible.
- */
-function is_ticket_visible( $ticket ) {
-  $tkt_visible = get_ticket_data( $tag , 'tkt_visible' );
-  $tkt_visible = (int) $tkt_visible;
-
-  if ($tkt_visible == 1)
-    return true;
-  else
-    return false;
-}

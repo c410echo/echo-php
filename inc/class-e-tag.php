@@ -11,7 +11,7 @@
  * Connects to database and creates tag object.
  *
  * @author Matt Beall
- * @since 0.0.4
+ * @since 0.2.0
  */
 class E_Tag {
 
@@ -34,11 +34,6 @@ class E_Tag {
    * @var string $tag_bg The background color of the tag
    */
   public $tag_bg = '777777';
-
-  /**
-   * @var int $tag_visible If 0, tag has been "deleted"; else, tag is visible.
-   */
-  public $tag_visible = 1;
 
   /**
    * Construct E_Tag object
@@ -115,7 +110,7 @@ class E_Tag {
     if ( ! $tag_id )
       return false;
 
-    $_tag = self::query("SELECT * FROM tags WHERE tag_id = $tag_id LIMIT 1");
+    $_tag = self::query("SELECT * FROM tags WHERE tag_id_PK = $tag_id LIMIT 1");
 
     return new E_Tag ( $_tag );
   }
@@ -148,9 +143,7 @@ class E_Tag {
     $tag_color = !empty($tag_color) ? _hexadec($tag_color) : 'ffffff';
     $tag_bg    = !empty($tag_bg)    ? _hexadec($tag_bg)    : '777777';
 
-    $tag_visible = 1;
-
-    $edb->insert('tags', 'tag_name,tag_color,tag_bg,tag_visible', "'$tag_name', '#$tag_color', '#$tag_bg', $tag_visible" );
+    $edb->insert('tags', 'tag_name,tag_color,tag_bg', "'$tag_name', '#$tag_color', '#$tag_bg'" );
   }
 
   /**
@@ -158,7 +151,7 @@ class E_Tag {
    *
    * Prepare and execute query to create tag in tags table
    *
-   * @since 0.0.4
+   * @since 0.2.0
    *
    * @uses edb::insert()
    * @uses _text()
@@ -168,7 +161,6 @@ class E_Tag {
    * @param string $tag_name    The name of the tag
    * @param string $tag_color   The text color of the tag
    * @param string $tag_bg      The background color of the tag
-   * @param int    $tag_visible If 0, tag has been "deleted"; else, tag is visible.
    *
    * @return void
    *
@@ -176,7 +168,7 @@ class E_Tag {
    *
    * @todo Test
    */
-  public static function set_instance( $tag_id, $tag_name = null, $tag_color = null, $tag_bg = null, $tag_visible = 1 ) {
+  public static function set_instance( $tag_id, $tag_name = null, $tag_color = null, $tag_bg = null ) {
     global $edb;
 
     $tag_id = (int) $tag_id;
@@ -186,16 +178,15 @@ class E_Tag {
     $tag_name    = !empty($tag_name)  ? _text( $tag_name, 32 ) : $_tag->tag_name;
     $tag_color   = !empty($tag_color) ? _hexadec($tag_color)   : $_tag->tag_color;
     $tag_bg      = !empty($tag_bg)    ? _hexadec($tag_bg)      : $_tag->tag_bg;
-    $tag_visible = !empty($tag_bg)    ? (int) $tag_visible     : $_tag->tag_visible;
 
-    $edb->update('tags', 'tag_name,tag_color,tag_bg,tag_visible', "'$tag_name', '#$tag_color', '#$tag_bg', $tag_visible", "tag_id = $tag_id" );
+    $edb->update('tags', 'tag_name,tag_color,tag_bg', "'$tag_name', '#$tag_color', '#$tag_bg'", "tag_id_PK = $tag_id" );
   }
 }
 
 /**
  * Insert tag into database
  *
- * @since 0.0.4
+ * @since 0.2.0
  *
  * @uses E_Tag::new_instance() Constructs E_Tag class and inserts into database
  *
@@ -306,23 +297,3 @@ function get_tag_bg( $tag ) {
   return $tag_bg;
 }
 
-/**
- * Check if the tag is visible or not
- *
- * @since 0.0.4
- *
- * @uses get_tag_data()
- *
- * @param  object $tag         The E_Tag class containing the data for the tag
- * @return bool
- * @var    string $tag_visible If 0, tag has been "deleted"; else, tag is visible.
- */
-function is_tag_visible( $tag ) {
-  $tag_visible = get_tag_data( $tag , 'tag_visible' );
-  $tag_visible = (int) $tag_visible;
-
-  if ($tag_visible == 1)
-    return true;
-  else
-    return false;
-}

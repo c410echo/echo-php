@@ -2,10 +2,10 @@
 /**
  * Login page
  *
- * Allows a registered user to login
+ * Allows a registered moderator to login
  *
  * @author Hannah Turner
- * @since 0.1.1
+ * @since 0.2.0
  *
  * @todo Validate input fields
  */
@@ -14,15 +14,15 @@ global $the_title;
 $the_title='Login';
 include_once ('header.php');
 
-$u_login_name = !empty($_POST['u_login_name']) ? $_POST['u_login_name'] : null;
-$u_pass = !empty($_POST['u_pass']) ? $_POST['u_pass'] : null;
+$mod_login_name = !empty($_POST['mod_login_name']) ? $_POST['mod_login_name'] : null;
+$mod_pass = !empty($_POST['mod_pass']) ? $_POST['mod_pass'] : null;
 
-if (!empty($u_login_name) && !empty($u_pass)) {
-  login_user( $u_login_name, $u_pass );
+if (!empty($mod_login_name) && !empty($mod_pass)) {
+  login_moderator( $mod_login_name, $mod_pass );
 }
 
 if (isset($_REQUEST['logout'])) {
-  logout_user();
+  logout_moderator();
 }
 
 ?>
@@ -37,12 +37,12 @@ if (isset($_REQUEST['logout'])) {
             <div class="entry-content">
               <form role="form" action="login.php" method="post">
                 <div class="form-group">
-                  <label for="u_login_name">Username</label>
-                  <input type="text" class="form-control" id="u_login_name" name="u_login_name" placeholder="Username">
+                  <label for="mod_login_name">Moderatorname</label>
+                  <input type="text" class="form-control" id="mod_login_name" name="mod_login_name" placeholder="Moderatorname">
                 </div>
                 <div class="form-group">
-                  <label for="u_pass">Password</label>
-                  <input type="password" class="form-control" id="eu_pass" name="u_pass" placeholder="Password">
+                  <label for="mod_pass">Password</label>
+                  <input type="password" class="form-control" id="emod_pass" name="mod_pass" placeholder="Password">
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
                 <a class="btn btn-default" href="register.php">Register</a>

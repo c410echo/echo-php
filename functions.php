@@ -165,22 +165,17 @@ function _email( $email, $length = 0 ) {
     return $new;
 }
 
-/** @since 0.0.8 */
+/** @since 0.2.0 */
 function get_tickets( $match = NULL, $join = false, $args = array() ) {
   global $edb;
-  $match = !empty($match) ? "tkt_visible = 1" . $match : "tkt_status = 'open' AND tkt_visible = 1";
-  if ($join) {
-    $results = $edb->select( 'tickets LEFT JOIN ticket_tags ON tickets.tkt_id = ticket_tags.tkt_id', '*', $match, $args );
-  }
-  else {
-    $results = $edb->select( 'tickets', '*', $match, $args );
-  }
+  $match = !empty($match) ? $match: "tkt_status = 'open'";
+  $results = $edb->select( 'tickets LEFT JOIN ticket_tags ON tkt_id_PK = tkt_id_FK', '*', $match, $args );
   return $results;
 }
 
-/** @since 0.0.8 */
+/** @since 0.2.0 */
 function get_tags() {
   global $edb;
-  $results = $edb->select( 'tags', '*', "tag_visible = 1" );
+  $results = $edb->select( 'tags', '*' );
   return $results;
 }
