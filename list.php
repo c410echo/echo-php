@@ -5,7 +5,7 @@
  * Used for search; displays list of tickets.
  *
  * @author Matt Beall, Hannah Turner
- * @since 0.0.8
+ * @since 0.2.0
  *
  * @todo Get rid of duplicate results
  */

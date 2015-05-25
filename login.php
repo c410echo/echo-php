@@ -5,7 +5,7 @@
  * Allows a registered moderator to login
  *
  * @author Hannah Turner
- * @since 0.1.1
+ * @since 0.2.0
  *
  * @todo Validate input fields
  */

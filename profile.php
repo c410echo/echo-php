@@ -7,7 +7,7 @@
  * this page displays public information for a particular moderator.
  *
  * @author Hannah Turner
- * @since 0.1.0
+ * @since 0.2.0
  *
  * @todo Validate input fields
  */

@@ -1,4 +1,4 @@
-Echo (PHP) 0.1.1
+Echo (PHP) 0.2.0
 ===
 
 The PHP code for the PHP version of the project

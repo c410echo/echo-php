@@ -11,7 +11,7 @@
  * Connects to database and creates moderator object.
  *
  * @author Matt Beall
- * @since 0.1.1
+ * @since 0.2.0
  */
 class E_Moderator {
 
@@ -60,7 +60,7 @@ class E_Moderator {
    *
    * Takes PDO and constructs E_Moderator class
    *
-   * @since 0.0.1
+   * @since 0.2.0
    *
    * @param  object $moderators The PHP Data Object
    */
@@ -78,7 +78,7 @@ class E_Moderator {
    * Attempt to connect to database and execute SQL query
    * If successful, return results.
    *
-   * @since 0.0.1
+   * @since 0.2.0
    *
    * @uses edb::connect()
    * @throws PDOException if connection or query cannot execute
@@ -114,7 +114,7 @@ class E_Moderator {
    *
    * Prepare and execute query to select moderator from database
    *
-   * @since 0.0.1
+   * @since 0.2.0
    *
    * @uses self::query()
    *
@@ -140,7 +140,7 @@ class E_Moderator {
    *
    * Prepare and execute query to register moderator in moderators table
    *
-   * @since 0.0.4
+   * @since 0.2.0
    *
    * @uses self::get_moderator_id()
    * @uses self::login_name_exists()
@@ -192,7 +192,7 @@ class E_Moderator {
    *
    * Prepare and execute query to update moderator in moderators table
    *
-   * @since 0.0.4
+   * @since 0.2.0
    *
    * @uses edb::update()
    *
@@ -232,7 +232,7 @@ class E_Moderator {
   /**
    * Checks to see if email address is already in use
    *
-   * @since 0.0.1
+   * @since 0.2.0
    *
    * @uses edb::select Queries database
    *
@@ -252,7 +252,7 @@ class E_Moderator {
   /**
    * Checks to see if login name is already in use
    *
-   * @since 0.0.1
+   * @since 0.2.0
    *
    * @uses edb::select Queries database
    *
@@ -272,7 +272,7 @@ class E_Moderator {
   /**
    * Retrieve moderator's id that matches an IP address
    *
-   * @since 0.0.1
+   * @since 0.2.0
    *
    * @uses self::query() to query the database
    *
@@ -295,7 +295,7 @@ class E_Moderator {
   /**
    * Retrieve moderator's id that matches an IP address
    *
-   * @since 0.0.1
+   * @since 0.2.0
    *
    * @uses self::query() to query the database
    *
@@ -322,7 +322,7 @@ class E_Moderator {
 /**
  * Create moderator
  *
- * @since 0.0.4
+ * @since 0.2.0
  *
  * @uses E_Moderator::new_instance() Constructs E_Moderator class and inserts into database
  *
@@ -340,7 +340,7 @@ function create_moderator( $mod_email, $mod_login_name, $mod_pass, $mod_first = 
 /**
  * Update moderator
  *
- * @since 0.0.4
+ * @since 0.2.0
  *
  * @uses E_Moderator::set_instance() Constructs E_Moderator class and updates in database
  *
@@ -360,7 +360,7 @@ function update_moderator( $mod_id, $mod_email = null, $mod_login_name = null, $
 /**
  * Get the E_Moderator class
  *
- * @since 0.0.1
+ * @since 0.2.0
  *
  * @uses E_Moderator::get_instance() Constructs E_Moderator class and gets class object
  *
@@ -376,7 +376,7 @@ function get_moderator( $mod_id ) {
 /**
  * Get specific data from a moderator object
  *
- * @since 0.0.1
+ * @since 0.2.0
  *
  * @param  object $moderator The E_Moderator class containing the data for a moderator
  * @param  string $key  The name of the field to be retrieved
@@ -393,7 +393,7 @@ function get_moderator_data( $moderator, $key ) {
 /**
  * Get the IP address of the moderator
  *
- * @since 0.0.1
+ * @since 0.2.0
  *
  * @uses get_moderator_data()
  *
@@ -409,7 +409,7 @@ function get_moderator_ip( $moderator ) {
 /**
  * Get the first name of the moderator
  *
- * @since 0.0.1
+ * @since 0.2.0
  *
  * @uses get_moderator_data()
  *
@@ -425,7 +425,7 @@ function get_moderator_first( $moderator ) {
 /**
  * Get the last name of the moderator
  *
- * @since 0.0.1
+ * @since 0.2.0
  *
  * @uses get_moderator_data()
  *
@@ -441,7 +441,7 @@ function get_moderator_last( $moderator ) {
 /**
  * Get the login name of the moderator
  *
- * @since 0.0.1
+ * @since 0.2.0
  *
  * @uses get_moderator_data()
  *
@@ -457,7 +457,7 @@ function get_moderator_login_name( $moderator ) {
 /**
  * Get the email address of the moderator
  *
- * @since 0.0.1
+ * @since 0.2.0
  *
  * @uses get_moderator_data()
  *
@@ -473,7 +473,7 @@ function get_moderator_email( $moderator ) {
 /**
  * Check if the moderator is an admin moderator
  *
- * @since 0.0.4
+ * @since 0.2.0
  *
  * @uses get_moderator_data()
  *
@@ -491,7 +491,7 @@ function is_moderator_admin( $moderator ) {
     return false;
 }
 
-/** @since 0.1.1 */
+/** @since 0.2.0 */
 function login_moderator( $moderatorname, $password ) {
   $mod_login_name = _text( $moderatorname );
   $mod_pass = _text( $password );

@@ -110,7 +110,7 @@ class E_Ticket {
    *
    * Prepare and execute query to select ticket from database
    *
-   * @since 0.0.3
+   * @since 0.2.0
    *
    * @uses self::query()
    *
@@ -136,7 +136,7 @@ class E_Ticket {
    *
    * Prepare and execute query to register ticket in tickets table
    *
-   * @since 0.0.4
+   * @since 0.2.0
    *
    * @uses edb::insert()
    * @uses _text()
@@ -165,7 +165,7 @@ class E_Ticket {
    *
    * Prepare and execute query to register ticket in tickets table
    *
-   * @since 0.0.4
+   * @since 0.2.0
    *
    * @uses edb::update()
    * @uses _text()
@@ -211,7 +211,7 @@ function create_ticket( $tkt_name, $tkt_desc, $tkt_priority = 'normal', $tkt_sta
 /**
  * Update ticket
  *
- * @since 0.0.4
+ * @since 0.2.0
  *
  * @uses E_Ticket::set_instance() Constructs E_Ticket class and gets class object
  *
@@ -323,7 +323,7 @@ function get_ticket_status( $ticket ) {
   return $tkt_status;
 }
 
-/** @since 0.1.0 */
+/** @since 0.2.0 */
 function get_ticket_tags($ticket) {
   global $edb;
   $results = $edb->select( 'ticket_tags JOIN tags ON tag_id_FK = tag_id_PK', '*', "tkt_id_FK = $ticket->tkt_id_PK" );

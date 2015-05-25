@@ -7,7 +7,7 @@
  * on all pages.
  *
  * @author Matt Beall
- * @since 0.1.0
+ * @since 0.2.0
  */
 session_start();
 session_regenerate_id();

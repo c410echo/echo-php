@@ -11,7 +11,7 @@
  * Connects to database and creates tag object.
  *
  * @author Matt Beall
- * @since 0.0.4
+ * @since 0.2.0
  */
 class E_Tag {
 
@@ -151,7 +151,7 @@ class E_Tag {
    *
    * Prepare and execute query to create tag in tags table
    *
-   * @since 0.0.4
+   * @since 0.2.0
    *
    * @uses edb::insert()
    * @uses _text()
@@ -186,7 +186,7 @@ class E_Tag {
 /**
  * Insert tag into database
  *
- * @since 0.0.4
+ * @since 0.2.0
  *
  * @uses E_Tag::new_instance() Constructs E_Tag class and inserts into database
  *

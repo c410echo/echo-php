@@ -11,14 +11,14 @@
  * Connects to database and creates object.
  *
  * @author Matt Beall
- * @since 0.0.1
+ * @since 0.2.0
  */
 class edb {
 
   /**
    * Connect to database
    *
-   * @since 0.0.1
+   * @since 0.2.0
    *
    * @param string $dbuser     The user connecting to the database
    * @param string $dbpassword The password for the user connecting to the database
